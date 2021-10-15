@@ -1,20 +1,32 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Formulario from './components/Formulario/Formulario';
+import React from "react";
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import Formulario from "./components/Formulario/Formulario";
 
 export default function App() {
+  
+  const ocultarTeclado = ( ) =>{
+    Keyboard.dismiss()//cierra el teclado al hacer click en la pantalla.
+  }
   return (
-    <View style={styles.container}>
-      <Formulario/>
-    </View>
+    <>
+      <TouchableWithoutFeedback onPress={()=> ocultarTeclado()}>
+        <View style={styles.app}>
+          <View style={styles.contenido}>
+            <Formulario />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </>
   );
 }
- 
+
 const styles = StyleSheet.create({
-  container: {
+  app: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "rgb(71,149,212)",
+    justifyContent: "center",
+  },
+  contenido: {
+    marginHorizontal: "2.5%",
   },
 });
