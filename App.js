@@ -7,6 +7,7 @@ import {
   Keyboard,
   Alert,
 } from "react-native";
+import Clima from "./components/Clima/Clima";
 import Formulario from "./components/Formulario/Formulario";
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
       <TouchableWithoutFeedback onPress={() => ocultarTeclado()}>
         <View style={styles.app}>
           <View style={styles.contenido}>
+            <Clima resultado={resultado}/>
             <Formulario
               busqueda={busqueda}
               setBusqueda={setBusqueda}
