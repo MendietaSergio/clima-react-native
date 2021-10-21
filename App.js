@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Formulario from "./components/Formulario/Formulario";
 
 export default function App() {
-  
+  const [busqueda, setBusqueda] = useState({
+    ciudad: '',
+    pasi:''
+  })
   const ocultarTeclado = ( ) =>{
     Keyboard.dismiss()//cierra el teclado al hacer click en la pantalla.
   }
@@ -12,7 +15,10 @@ export default function App() {
       <TouchableWithoutFeedback onPress={()=> ocultarTeclado()}>
         <View style={styles.app}>
           <View style={styles.contenido}>
-            <Formulario />
+            <Formulario
+            busqueda={busqueda}
+            setBusqueda={setBusqueda}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>
