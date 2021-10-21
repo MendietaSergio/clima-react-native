@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -6,69 +6,69 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
-  Alert  
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-community/picker";
 
-const Formulario = ({
-    busqueda,
-    setBusqueda
-}) => {
-    const {pais, ciudad} = busqueda;
+const Formulario = ({ 
+    busqueda, 
+    setBusqueda,
+    setConsultar
+ }) => {
+  const { pais, ciudad } = busqueda;
+  
   //solo la variable del estado
   const [animacionBtn] = useState(new Animated.Value(1));
   const animacionEntrada = () => {
     Animated.spring(animacionBtn, {
       toValue: 0.9,
+      useNativeDriver: true
     }).start();
   };
   const animacionSalida = () => {
     Animated.spring(animacionBtn, {
       toValue: 1,
       friction: 4,
-      tension:30
+      tension: 30,
+      useNativeDriver: true
     }).start();
   };
   const estilosAnimacion = {
     transform: [{ scale: animacionBtn }],
   };
-  const animacionEntrada = () => {
-    console.log("entrada..");
-  };
-  const animacionSalida = () => {
-    console.log("salida...");
-  };
-  const consultarClima = () =>{
-      if(pais.trim() === '' || ciudad.trim() === ''){
+
+  const consultarClima = () => {
+    if(pais === '' || ciudad.trim() === '') {
         mostrarAlert();
-        return
-      }
-  }
-  const mostrarAlert = () =>{
-      Alert.alert(
-          'Error',
-          'Agrega una ciudad y país para la búsqueda',
-          [{text: 'Entendifo'}]
-      )
-  }
+        return;
+    }
+
+    // consultar la api
+    setConsultar(true)
+}
+  const mostrarAlert = () => {
+    Alert.alert("Error", "Agrega una ciudad y país para la búsqueda", [
+      { text: "Entendifo" },
+    ]);
+  };
 
   return (
     <>
       <View style={styles.formulario}>
         <View>
           <TextInput
-          value={ciudad}
-          onChange={ciudad => setBusqueda({...busqueda, ciudad})}
+            value={ciudad}
+            onChangeText={(ciudad) => setBusqueda({ ...busqueda, ciudad })}
             style={styles.input}
             placeholder="Ciudad"
             placeholderTextColor="#666"
           />
         </View>
         <View>
-          <Picker 
-          selectedValue={pais}
-          itemStyle={{ height: 120, backgroundColor: "#FFF" }}
-          onValueChange={pais=> setBuqueda({...busqueda, pais})}
+          <Picker
+            selectedValue={pais}
+            itemStyle={{ height: 120, backgroundColor: "#FFF" }}
+            onValueChange={(pais) => setBusqueda({ ...busqueda, pais })}
           >
             <Picker.Item label="-- Seleccione un país --" value="" />
             <Picker.Item label="Estados Unidos" value="US" />
@@ -84,9 +84,9 @@ const Formulario = ({
           //cuando lo precionas y cuando lo sueltas
           onPressIn={() => animacionEntrada()}
           onPressOut={() => animacionSalida()}
-          onPress={() =>consultarClima()}
+          onPress={() => consultarClima()}
         >
-          <Animated.View style={styles.btnBuscar, estilosAnimacion}>
+          <Animated.View style={[styles.btnBuscar, estilosAnimacion]}>
             <Text style={styles.textBuscar}>Buscar Clima</Text>
           </Animated.View>
         </TouchableWithoutFeedback>
