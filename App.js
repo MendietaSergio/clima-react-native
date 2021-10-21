@@ -17,6 +17,7 @@ export default function App() {
   });
   const [consultar, setConsultar] = useState(false);
   const [resultado, setResultado] = useState({});
+  const [ bgColor, setBGColor] =useState("rgb(71,149,212)")
   const { ciudad, pais } = busqueda;
   useEffect(() => {
     const consultarClima = async () => {
@@ -30,6 +31,23 @@ export default function App() {
           console.log(resul);
           setResultado(resul);
           setConsultar(false);
+          //Modifica los colores de fondo basdo en la temperatura
+          const kelvin = 273-15;
+          const { main } =resultado;
+          const actual = main.temp-kelvin;
+          console.log("main ",main);
+          if( actual < 10){
+            console.log("if");
+            
+            setBGColor('rgb(105,108,149)')
+          } else if(actual>=10 && actual <25){
+            setBGColor('rgb(71,149,212)')
+            console.log("else if");
+
+          }else{
+            setBGColor('rgb(178,28,61)')
+            console.log("else");
+          }
         } catch (error) {
           mostrarAlert();
         }
@@ -45,10 +63,13 @@ export default function App() {
       { text: "OK" },
     ]);
   };
+  const bgColorApp ={
+    backgroundColor: bgColor
+  }
   return (
     <>
       <TouchableWithoutFeedback onPress={() => ocultarTeclado()}>
-        <View style={styles.app}>
+        <View style={[styles.app, bgColorApp]}>
           <View style={styles.contenido}>
             <Clima resultado={resultado}/>
             <Formulario
@@ -66,7 +87,6 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: "rgb(71,149,212)",
     justifyContent: "center",
   },
   contenido: {
